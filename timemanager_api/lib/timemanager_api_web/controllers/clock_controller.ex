@@ -12,7 +12,7 @@ defmodule TodolistWeb.ClockController do
   # end
 
   def update(conn, %{"userID" => id, "clock" => clock_params}) do
-    clock = Schemas.get_clock!(id)
+    clock = Schemas.list_clocks!(id)
 
     with {:ok, %Clock{} = clock} <- Schemas.update_clock(clock, clock_params) do
       render(conn, "show.json", clock: clock)

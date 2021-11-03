@@ -9,7 +9,7 @@
         <v-row align="center" justify="center">
               <canvas style="max-height: 600px; max-width: 80%" id="planet-chart"></canvas>
         </v-row>
-        <v-row>
+        <v-row class="mt-10">
             <v-card elevation="6" style="margin: auto">
               <v-card-title class="justify-center">CHART PANNEL</v-card-title>
               <v-card-actions>
