@@ -24,8 +24,6 @@ jobs:
       - checkout
 
       # specify any bash command here prefixed with `run: `
-      - run: cd timemanager_api
-      - run: ls
-      - run: mix deps.get
-      - run: mix ecto.create
-      - run: mix test
+      - run: cd timemanager_api && mix deps.get
+      - run: cd timemanager_api && mix ecto.create
+      - run: cd timemanager_api && mix test
