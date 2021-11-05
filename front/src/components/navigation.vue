@@ -68,11 +68,8 @@ export default {
         { title: 'Home', icon: 'mdi-home-city', to: "/connexion" },
         { title: 'My Account', icon: 'mdi-account', to: "/User" },
         { title: 'Login', icon: 'mdi-account', to: "/Login" },
-<<<<<<< HEAD
         { title: 'Chart', icon: 'mdi-chart', to: "/Chart" },
         { title: 'workForm', icon: 'mdi-chart', to: "/workForm" },
-=======
->>>>>>> parent of 7e83f0d... [ADD] Chart + scroll area for the WorkingTimes
       ],
     }
   },
