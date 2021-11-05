@@ -38,6 +38,8 @@ jobs:
       - run: npm install && npm run build
 
   deploy-job:
+    docker:
+      - image: cimg/node:16.13.0-browsers
     steps:
       - add_ssh_keys:
           fingerprints:
