@@ -1,0 +1,57 @@
+
+version: 2
+
+jobs:    
+  build:
+    docker:
+      - image: circleci/elixir:latest
+        environment:
+          MIX_ENV: test
+            
+      - image: circleci/postgres:latest
+        environment:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+
+    working_directory: ~/repo/timemanager_api
+    steps:
+      - checkout:
+          path: ~/repo
+      - run: mix local.hex --force
+      - run: mix deps.compile
+      - run: mix local.rebar --force 
+      - run: mix deps.get --force 
+      - run: mix ecto.create 
+      - run: mix ecto.migrate
+      - run: mix test   
+  node:
+    docker:
+      - image: cimg/node:16.13.0-browsers
+
+    working_directory: ~/repo/timemanager_front
+
+    steps:
+      - checkout:
+          path: ~/repo
+      - run: npm install && npm run lint
+      - run: npm install && npm run build
+
+  deploy-job:
+    docker:
+      - image: cimg/node:16.13.0-browsers
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "49:75:cd:cb:ba:33:3e:6d:99:41:b4:6c:17:ff:fc:1f"
+      - run: ssh ubuntu@52.14.27.85 && ./rebuild.sh
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - node
+      - build
+      - deploy-job:
+          requires:
+            - build
+            - node
