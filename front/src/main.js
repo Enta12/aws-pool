@@ -8,7 +8,8 @@ import User from "./components/User";
 import Login from "./components/Login";
 import Home from "./components/Home";
 import Charts from "./components/Charts";
-import workForm from "./components/workForm";
+import workFormCheckbox from "./components/workFormCheckbox";
+import workFormEntry from "./components/workFormEntry";
 Vue.config.productionTip = false
 
 Vue.use(VueRouter)
@@ -19,7 +20,8 @@ const routes = [
   { path: '/User', component: User },
   { path: '/Login', component: Login },
   { path: '/Chart', component: Charts },
-  { path: '/workForm', component: workForm },
+  { path: '/workFormCheckbox', component: workFormCheckbox },
+  { path: '/workFormEntry', component: workFormEntry },
 ]
 
 const router = new VueRouter({
