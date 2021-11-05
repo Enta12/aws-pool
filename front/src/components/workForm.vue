@@ -11,8 +11,6 @@
             </v-card-title>
             <v-divider></v-divider>
 
-            
-
               <button id="1" class="day button" v-on:click="dayButtonClick(1)" name="Monday">M</button>
               <button id="2" class="day button" v-on:click="dayButtonClick(2)" name="Tuesday">T</button>
               <button id="3" class="day button" v-on:click="dayButtonClick(3)" name="Wednseday">W</button>
@@ -150,8 +148,10 @@
 export default {
   methods : {
     dayButtonClick(id){
+      console.log("DEBUG:", id,this.items[id-1].day )
       this.hourCount = 0
-      this.activeDay = this.items[id].day
+      this.activeDay = this.items[id-1].day
+      this.confirmed = false
       if (this.dayAlreadyUp){
         this.setDaystoOff()
         this.setDaytoUp(id) 
