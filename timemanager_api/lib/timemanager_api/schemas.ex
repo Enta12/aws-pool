@@ -246,7 +246,7 @@ defmodule Todolist.Schemas do
 
   """
   def get_workingtime!(user_id, id) do
-    Repo.one(from w in Workingtime, where: w.user_id == ^user_id and w.id == ^id)
+    Repo.get_by!(Workingtime, [user_id: user_id, id: id])
   end
 
   def get_workingtime!(id), do: Repo.get!(Workingtime, id)

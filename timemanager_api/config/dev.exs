@@ -6,6 +6,7 @@ config :timemanager_api, Todolist.Repo,
   password: System.get_env("PGPASSWORD"),
   database: System.get_env("PGDATABASE"),
   hostname: System.get_env("PGHOST"),
+
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
