@@ -1,11 +1,8 @@
 <template>
-  <v-card height="97vh"
-  max-width="13vw"
-  min-width="13vw">
     <v-navigation-drawer
-        absolute
         permanent
         left
+        app
     >
       <template v-slot:prepend>
         <v-list-item two-line>
@@ -47,7 +44,6 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-  </v-card>
 </template>
 
 <script>
@@ -65,7 +61,7 @@ export default {
       imgAvatar : this.$store.state.user.imgAvatar,
       id : this.$store.state.user.id,
       items: [
-        { title: 'Home', icon: 'mdi-home-city', to: "/connexion" },
+        { title: 'Home', icon: 'mdi-home-city', to: "/Home" },
         { title: 'My Account', icon: 'mdi-account', to: "/User" },
         { title: 'Login', icon: 'mdi-account', to: "/Login" },
         { title: 'Chart', icon: 'mdi-chart', to: "/Chart" },
