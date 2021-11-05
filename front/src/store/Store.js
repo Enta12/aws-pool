@@ -13,7 +13,9 @@ const store = new Vuex.Store({
             username : "",
             isConnected : false,
             email : "",
-            id : -1
+            id : -1,
+            PointingDate : {},
+            TimeElapsed : ""
         }
     },
     mutations: {
@@ -40,6 +42,10 @@ const store = new Vuex.Store({
             state.user.isConnected = false
             state.user.isLoggedIn = false
             state.user.imgAvatar = ""
+            state.user.PointingDate = {}
+        },
+        SetPointingDate(state, param) {
+            state.user.PointingDate = {date_str: param.date_str, date : param.date_str}
         }
     }
 })

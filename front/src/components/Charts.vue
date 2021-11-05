@@ -13,8 +13,8 @@
             <v-card elevation="6" style="margin: auto">
               <v-card-title class="justify-center">CHART PANNEL</v-card-title>
               <v-card-actions>
-                <v-btn>Line chart</v-btn>
-                <v-btn>Bar chart</v-btn>
+                <v-btn v-on:click="ChangeForDay">Voir pour la journée</v-btn>
+                <v-btn>Voir pour la semaine</v-btn>
               </v-card-actions>
             </v-card>
         </v-row>
@@ -25,6 +25,7 @@
 <script>
 import {Chart, registerables} from 'chart.js'
 import {BarChart, LineChart, PieChart} from "../ChartsType";
+//import {GetAllWorkingTimes, getDateTime} from "../storeUtils/StoreUtils";
 
 Chart.register(...registerables)
 
@@ -33,27 +34,40 @@ export default {
   data() {
     return {
       DataChart : {},
-      mychart : null
+      mychart : null,
+      actual_canva : 0
     }
   },
   methods : {
+    async ChangeForDay() {
+
+      if (this.actual_canva === 0) {
+        this.DataChart.data.datasets[0].data
+      }
+    },
+    ChangeForWeek() {
+
+    },
     PutLineChart() {
       this.DataChart = LineChart
       this.mychart.destroy()
       const ctx = document.getElementById('planet-chart');
       this.mychart = new Chart(ctx, this.DataChart);
+      this.actual_canva = 0
     },
     PutBarChart() {
       this.DataChart = BarChart
       this.mychart.destroy()
       const ctx = document.getElementById('planet-chart');
       this.mychart = new Chart(ctx, this.DataChart);
+      this.actual_canva = 1
     },
     PutPieChart() {
       this.DataChart = PieChart
       this.mychart.destroy()
       const ctx = document.getElementById('planet-chart');
       this.mychart = new Chart(ctx, this.DataChart);
+      this.actual_canva = 2
     }
   },
   mounted() {
