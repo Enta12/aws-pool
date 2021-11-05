@@ -29,7 +29,7 @@ jobs:
     docker:
       - image: cimg/node:16.13.0-browsers
 
-    working_directory: ~/repo/timemanager_front
+    working_directory: ~/repo/front
 
     steps:
       - checkout:
