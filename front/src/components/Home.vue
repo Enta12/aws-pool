@@ -37,7 +37,9 @@ export default {
   },
   data () {
     return {
-      knowledge : 33
+      knowledge : 33,
+      remaining_time : "",
+      pourcentage : 0
     }
   },
   mounted() {
@@ -62,9 +64,11 @@ export default {
     GetRemainingTime() {
     },
     Pointer() {
+      let date = getDateTime()
       if (this.$store.state.user.isConnected === false)
       {
-        let test = {clock: {time: getDateTime(), status: false}}
+        this.$store.commit('SetPointingDate', {date_str :date.date_str, date : date.date})
+        let test = {clock: {time: date.date_str, status: false}}
           fetch("http://localhost:4000/api/clocks/" + this.$store.state.user.id, {
             headers: {
               'Accept': 'application/json',
@@ -78,6 +82,9 @@ export default {
               }).catch((err) => {
             console.log("MY ERROR = ", err)
           })
+        this.$store.commit("pointer")
+      }
+      else {
         this.$store.commit("pointer")
       }
     },
