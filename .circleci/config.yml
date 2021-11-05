@@ -1,31 +1,55 @@
-# Elixir CircleCI 2.0 configuration file
-# See: https://circleci.com/docs/2.0/language-elixir/
+
 version: 2
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
-jobs:
+jobs:    
   build:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
-      # specify the version here
       - image: circleci/elixir:latest
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
+        environment:
+          MIX_ENV: test
+            
+      - image: circleci/postgres:latest
+        environment:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
 
     working_directory: ~/repo/timemanager_api
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
-      - checkout
+      - checkout:
+          path: ~/repo
+      - run: mix local.hex --force
+      - run: mix deps.compile
+      - run: mix local.rebar --force 
+      - run: mix deps.get --force 
+      - run: mix ecto.create 
+      - run: mix ecto.migrate
+      - run: mix test   
+  node:
+    docker:
+      - image: cimg/node:16.13.0-browsers
 
-      # specify any bash command here prefixed with `run:`
-      - run: cd timemanager_api && ls
-      - run: cd timemanager_api && mix local.hex --force
-      - run: cd timemanager_api && mix deps.get
-      - run: cd timemanager_api && mix local.rebar --force
-      - run: cd timemanager_api && mix test
+    working_directory: ~/repo/timemanager_front
+
+    steps:
+      - checkout:
+          path: ~/repo
+      - run: npm install && npm run lint
+      - run: npm install && npm run build
+
+  deploy-job:
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "49:75:cd:cb:ba:33:3e:6d:99:41:b4:6c:17:ff:fc:1f"
+      - run: ssh ubuntu@52.14.27.85 && ./rebuild.sh
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - node
+      - build
+      - deploy-job:
+          requires:
+            - build
+            - node
