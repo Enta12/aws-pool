@@ -82,7 +82,7 @@
           </v-card>
         </v-flex>
       </v-layout>
-      <p v-if="this.timeSubmitedConfirmed" > {{ this.workedHourToString }}</p>
+      <p v-if="this.timeSubmitedConfirmed" > {{ this.confirmedMessage }}</p>
 
   </v-container>
   
@@ -113,7 +113,6 @@ export default {
       // Clear the interface
       this.clear()
       this.timeSubmitedConfirmed = true
-
       this.timeAnalyse(dateRawEntry)
 
       return 0
@@ -127,6 +126,7 @@ export default {
       this.lunchRawEntry = '',
       this.timeSubmited = false,
       this.timeSubmitedConfirmed = false
+      this.goodValues = true
     },
     timeAnalyse(dateRawEntry){
       console.log("DEBUG: timeAnalyse => ", dateRawEntry)
@@ -134,35 +134,89 @@ export default {
       this.time = dateRawEntry.split(':');
       this.startT = this.time[0] // 9h12
       this.endT = this.time[1]   // 17h23
-      console.log(this.startT, this.endT);
 
 
-      // if startT < endT (9h12:17h23)
-        this.startM = this.startT.split('h');
-        this.hourStart = this.startM[0]       // 9 hour
-        this.minuteStart = this.startM[1]     // 12 minute
-        console.log("hour", this.hourStart, "minute", this.minuteStart);
+      // Get all data
+      this.startM = this.startT.split('h');
+      this.hourStart = this.startM[0]       // 9 hour
+      this.minuteStart = this.startM[1]     // 12 minute
 
-        this.endM = this.endT.split('h');
-        this.hourEnd = this.endM[0]           // 17 hour
-        this.minuteEnd = this.endM[1]         // 23 minute
-        console.log("hour", this.hourEnd, "minute", this.minuteEnd);
+      this.endM = this.endT.split('h');
+      this.hourEnd = this.endM[0]           // 17 hour
+      this.minuteEnd = this.endM[1]         // 23 minute
 
-        // Exemple: (9h12:17h23)
-        if (this.minuteEnd > this.minuteStart){
-          this.minute = this.minuteEnd - this.minuteStart
-          this.hour = this.hourEnd - this.hourStart
+      // Check if entry is in the 23h00:6h00 format
+      // Hour check
+      if ((Number.parseInt(this.hourStart, 10) < 0 || Number.parseInt(this.hourEnd, 10) < 0 )
+          || Number.parseInt(this.hourStart, 10) > 23 || Number.parseInt(this.hourEnd, 10) > 23){
+        this.goodValues = false
+        console.log("DEBUG: BAD VALUES")
+      }
+      if ((Number.parseInt(this.minuteStart, 10) < 0 || Number.parseInt(this.minuteEnd, 10) < 0 )
+          || Number.parseInt(this.minuteStart, 10) > 59 || Number.parseInt(this.minuteEnd, 10) > 59){
+        this.goodValues = false
+        console.log("DEBUG: BAD VALUES")
+      }
+
+    
+      if (this.goodValues){
+        // if hourStart < hourEnd (9h12:17h23)
+        if (Number.parseInt(this.hourStart, 10) < Number.parseInt(this.hourEnd, 10)){
+          //console.log("DEBUG: hourstart < hour end ", this.hourStart, " " ,this.hourEnd, "=> ", this.hourStart-this.hourEnd)
+          // Exemple: (9h12:17h23)
+          if (Number.parseInt(this.minuteEnd, 10) > Number.parseInt(this.minuteStart, 10)){
+            this.minute = this.minuteEnd - this.minuteStart
+            this.hour = this.hourEnd - this.hourStart
+          }
+          // Exemple: (9h59:17h03)
+          else if (Number.parseInt(this.minuteEnd, 10) < Number.parseInt(this.minuteStart, 10)){
+            this.minute = 60 - (this.minuteStart - this.minuteEnd)
+            this.hour = this.hourEnd - this.hourStart - 1
+          }
+          // Exemple: (9h30:17h30)
+          else if (Number.parseInt(this.minuteEnd, 10) == Number.parseInt(this.minuteStart, 10)){
+            this.minute = 0
+            this.hour = this.hourEnd - this.hourStart
+          }
         }
 
-        // Exemple: (9h59:17h03)
-        else{
-          this.minute = 60 - (this.minuteStart - this.minuteEnd)
-          this.hour = this.hourEnd - this.hourStart - 1
-        }
-      // if startT > endT (23h00:06h20)
-      // TO DO
 
-      this.workedHourToString = "Employee XXX worked "+ this.hour + "h" + this.minute + " on " + this.activeDay
+        // if hourStart > hourEnd (23h00:6h00)
+        else if (Number.parseInt(this.hourStart, 10) > Number.parseInt(this.hourEnd, 10)){
+          // Exemple: (23h00:6h30)
+          if (Number.parseInt(this.minuteEnd, 10) > Number.parseInt(this.minuteStart, 10)){
+            // console.log("DEBUG: 23h00:6h30")
+            this.minute = this.minuteEnd - this.minuteStart
+            this.hour = 24 - (this.hourStart - this.hourEnd)
+          }
+          // Exemple: (23h59:6h03)
+          else if (Number.parseInt(this.minuteEnd, 10) < Number.parseInt(this.minuteStart, 10)){
+            // console.log("DEBUG: 23h59:6h03")
+            this.minute = 60 - (this.minuteStart - this.minuteEnd)
+            this.hour = 24 - (this.hourStart - this.hourEnd) - 1
+          }
+          // Exemple: (23h00:6h00)
+          else if (Number.parseInt(this.minuteEnd, 10) == Number.parseInt(this.minuteStart, 10)){
+            // console.log("DEBUG: 23h00:6h00")
+            this.minute = 0
+            this.hour = 24 - (this.hourStart - this.hourEnd)
+          }
+        }
+
+        // if hourStart > hourEnd (9h00:9h30)
+        // TO DO
+        else if (Number.parseInt(this.hourStart, 10) == Number.parseInt(this.hourEnd, 10)){
+          // Exemple: (9h00:9h30)
+          // Exemple: (9h00:9h00)
+          // Exemple: (9h20:9h10)
+          console.log("DEBUG: 9h00:9h30")
+        }
+        this.confirmedMessage = "Employee XXX worked "+ this.hour + "h" + this.minute + " on " + this.activeDay
+        // console.log("worked:" + this.hour + "h" + this.minute)
+      }
+      else{
+        this.confirmedMessage = "Bad data entry, please respect the 9h00:9h30 format"
+      }
 
       // STRING TO INT ???
       // TO DO
@@ -179,7 +233,6 @@ export default {
       }
     },
     submitTime(){
-      console.log("DEBUG submitTime")
       this.timeSubmited = true
     },  
 
@@ -229,8 +282,9 @@ export default {
       minuteEnd : '',
       hour : '',
       minute : '',
+      goodValues : true,
 
-      workedHourToString : '',
+      confirmedMessage : '',
 
       day : String,
 
