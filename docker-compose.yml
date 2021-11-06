@@ -2,8 +2,11 @@ version: '3.6'
 services:
   db:
     container_name: DB_Postgresql
-    env_file:
-      - .env
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_HOST_AUTH_METHOD: trust
     image: 'postgres:11-alpine'
     restart: always
     ports:
@@ -12,8 +15,11 @@ services:
       - 'pgdata:/var/lib/postgresql/data'
   api:
     container_name: API_container
-    env_file:
-      - .env
+    environment:
+      PG_USER: ${PG_USER}
+      PG_PASSWORD: ${PG_PASSWORD}
+      PG_DB: ${PG_DB}
+      PG_HOSTNAME: ${PG_HOSTNAME}
     build: ./timemanager_api
     depends_on:
       - db
@@ -23,15 +29,15 @@ services:
       - '4000:4000'
     volumes:
       - './tm_api:/app'
-  #front:
-   # container_name: Front_container
-   # build: 
-   #   context: ./front/
-  #  environment:
-  #    MIX_ENV: dev
-  #  ports:
-  #    - '8080:8080'
-  #  volumes:
-  #    - './tm_front:/app'
+  front:
+   container_name: Front_container
+   build: 
+     context: ./front/
+   environment:
+      NODE_ENV: development2
+   ports:
+     - '8080:8080'
+   volumes:
+     - './tm_front:/app'
 volumes:
   pgdata: 

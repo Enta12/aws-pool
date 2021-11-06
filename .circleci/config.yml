@@ -44,7 +44,9 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "49:75:cd:cb:ba:33:3e:6d:99:41:b4:6c:17:ff:fc:1f"
-      - run: ssh ubuntu@52.14.27.85 && ./rebuild.sh
+
+      - run: echo "$SSH_FINGERPRINT" >> ~/.ssh/known_hosts
+      - run: ssh ubuntu@3.17.64.218 ./aws/rebuild.sh
 workflows:
   version: 2
   build_and_test:
