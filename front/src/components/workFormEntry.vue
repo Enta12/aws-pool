@@ -203,22 +203,37 @@ export default {
           }
         }
 
-        // if hourStart > hourEnd (9h00:9h30)
-        // TO DO
+        // if hourStart == hourEnd (9h00:9h30)
         else if (Number.parseInt(this.hourStart, 10) == Number.parseInt(this.hourEnd, 10)){
           // Exemple: (9h00:9h30)
-          // Exemple: (9h00:9h00)
-          // Exemple: (9h20:9h10)
+          if (Number.parseInt(this.minuteEnd, 10) > Number.parseInt(this.minuteStart, 10)){
+            // console.log("DEBUG: 9h00:9h30")
+            this.minute = this.minuteEnd - this.minuteStart
+            this.hour = 0
+          }
+          // Exemple: (9h30:9h10)
+          else if (Number.parseInt(this.minuteEnd, 10) < Number.parseInt(this.minuteStart, 10)){
+            // console.log("DEBUG: 9h30:9h10")
+            console.log("DEBUG: BAD VALUES")
+            this.confirmedMessage = "Bad data entry, please respect the 9h00:9h30 format"
+            return 0
+          }
+          // Exemple: (9h10:9h10)
+          else if (Number.parseInt(this.minuteEnd, 10) == Number.parseInt(this.minuteStart, 10)){
+            // console.log("DEBUG: 23h00:6h00")
+            this.minute = 0
+            this.hour = 0
+          }
           console.log("DEBUG: 9h00:9h30")
         }
-        this.confirmedMessage = "Employee XXX worked "+ this.hour + "h" + this.minute + " on " + this.activeDay
+        this.confirmedMessage = "Employee " + this.employeName + " worked "+ this.hour + "h" + this.minute + " on " + this.activeDay
         // console.log("worked:" + this.hour + "h" + this.minute)
       }
       else{
         this.confirmedMessage = "Bad data entry, please respect the 9h00:9h30 format"
       }
 
-      // STRING TO INT ???
+      // RETURN STRING TO INT ???
       // TO DO
     },
 
@@ -255,6 +270,7 @@ export default {
       darkTheme: true,
       platformDay: 'Choose a day',
       platformHour: 'Write down your entry and leaving hour',
+      employeName : 'XXX',
       activeDay : '',
       email: null,
       username: null,
