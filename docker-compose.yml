@@ -1,7 +1,7 @@
 version: '3.6'
 services:
   db:
-    container_name: DB_Postgresql
+    container_name: db
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_PASSWORD: ${PG_PASSWORD}
@@ -14,8 +14,9 @@ services:
     volumes:
       - 'pgdata:/var/lib/postgresql/data'
   api:
-    container_name: API_container
+    container_name: api
     environment:
+      MIX_ENV: dev
       PG_USER: ${PG_USER}
       PG_PASSWORD: ${PG_PASSWORD}
       PG_DB: ${PG_DB}
@@ -23,21 +24,17 @@ services:
     build: ./timemanager_api
     depends_on:
       - db
-    environment:
-      MIX_ENV: dev
     ports:
       - '4000:4000'
-    volumes:
-      - './tm_api:/app'
-  front:
-   container_name: Front_container
-   build: 
-     context: ./front/
-   environment:
-      NODE_ENV: development2
-   ports:
-     - '8080:8080'
-   volumes:
-     - './tm_front:/app'
+  #front:
+ #  container_name: Front_container
+ #  build: 
+  #   context: ./front/
+   #environment:
+    #  NODE_ENV: development2
+#   ports:
+#     - '8080:8080'
+#   volumes:
+#     - './tm_front:/app'
 volumes:
   pgdata: 
