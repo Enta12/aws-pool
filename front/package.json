@@ -10,6 +10,7 @@
   "dependencies": {
     "chart.js": "^3.6.0",
     "core-js": "^3.6.5",
+    "http-server": "^14.0.0",
     "vue": "^2.6.11",
     "vue-router": "^3.5.3",
     "vuetify": "^2.4.0",
