@@ -37,7 +37,7 @@ jobs:
       - run: npm install && npm run lint
       - run: npm install && npm run build
 
-  deploy-job:
+  connard:
     docker:
       - image: cimg/node:16.13.0-browsers
     steps:
@@ -51,9 +51,4 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - node
-      - build
-      - deploy-job:
-          requires:
-            - build
-            - node
+      - connard
