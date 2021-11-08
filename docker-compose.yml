@@ -26,15 +26,15 @@ services:
       - db
     ports:
       - '4000:4000'
-  #front:
- #  container_name: Front_container
- #  build: 
-  #   context: ./front/
-   #environment:
-    #  NODE_ENV: development2
-#   ports:
-#     - '8080:8080'
-#   volumes:
-#     - './tm_front:/app'
+  front:
+    container_name: Front_container
+    build: 
+      context: ./front/
+    environment:
+      NODE_ENV: development2
+    ports:
+      - '8080:8080'
+    volumes:
+      - './tm_front:/app'
 volumes:
   pgdata: 
