@@ -44,7 +44,7 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "2a:24:ae:98:32:e1:de:12:b0:98:85:62:9b:0c:98:c3"
-      - run: ssh -o "StrictHostKeyChecking no" circleci@52.14.27.85 ./aws-pool/rebuild.sh
+      - run: ssh -o "StrictHostKeyChecking no" circleci@ligne7.pepintrie.fr ./aws-pool/rebuild.sh
 workflows:
   version: 2
   build_and_test:
