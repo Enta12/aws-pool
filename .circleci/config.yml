@@ -44,8 +44,6 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "2a:24:ae:98:32:e1:de:12:b0:98:85:62:9b:0c:98:c3"
-
-      - run: echo "$SSH_FINGERPRINT" >> ~/.ssh/known_hosts
       - run: ssh -o "StrictHostKeyChecking no" ubuntu@52.14.27.85 sudo ./aws-pool/rebuild.sh
 workflows:
   version: 2
