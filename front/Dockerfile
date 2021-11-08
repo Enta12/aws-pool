@@ -8,4 +8,4 @@ RUN npm install
 
 RUN npm run build
 
-CMD npm run serve
+CMD [ "http-server", "dist" ]
