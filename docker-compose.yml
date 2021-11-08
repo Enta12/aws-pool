@@ -34,7 +34,5 @@ services:
       NODE_ENV: development2
     ports:
       - '8080:8080'
-    volumes:
-      - './tm_front:/app'
 volumes:
   pgdata: 

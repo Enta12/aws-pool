@@ -5,7 +5,9 @@ WORKDIR /app
 COPY ./ ./
 
 RUN npm install -g http-server
+
 RUN npm install
+
 RUN npm run build
 
 CMD [ "http-server", "dist" ]
