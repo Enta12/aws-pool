@@ -83,6 +83,9 @@ export default {
       this.showHour = true
       this.dateAnalyse(date)
     },
+    getEmployeeName(rawEmployeeName){
+      this.employeeName = rawEmployeeName
+    },
 
     confirm(dateRawEntry){
       // Clear the interface
@@ -94,11 +97,8 @@ export default {
     },
     clear(){
       this.setDaystoOff()
-      this.dayAlreadyUp = false
       this.showHour = false
       this.dateRawEntry = ''
-      this.lunchChoice = ''
-      this.lunchRawEntry = ''
       this.timeSubmited = false
       this.timeSubmitedConfirmed = false
       this.goodValues = true
@@ -115,23 +115,27 @@ export default {
       this.dateToString = dateSplit[2] + " " + this.monthEntry + " " + dateSplit[0]
       console.log(this.dateToString)
     },
-    // TODO
+
     errorMessage(errorType){
       console.log("DEBUG ERROR MESSAGE" + errorType)
-      if (errorType == 1) 
+      if (errorType == 'bad format') 
         this.confirmedMessage = "Bad data entry, please respect the 09h00:09h30 format"
-      if (errorType == 2) 
+
+      if (errorType == 'bad hour entry') 
         this.confirmedMessage = "Bad data entry, acceptable hours: 00h -> 23h"
-      if (errorType == 3) 
+
+      if (errorType == 'bad minute entry') 
         this.confirmedMessage = "Bad data entry, acceptable minutes: 00 -> 59"
-      if (errorType == 4) 
+
+      if (errorType == 'work time > 12 hour') 
         this.confirmedMessage = "Bad data entry, cannot work more than 12 hours"
-      if (errorType == 5) 
+
+      if (errorType == 'bad data entry') 
         this.confirmedMessage = "Bad data entry..."
     },
     timeAnalyse(timeRawEntry){
       // Check if the entry is correct
-      if (timeRawEntry[2] != "h" || timeRawEntry[5] != ":" || timeRawEntry[8] != "h" ) return this.errorMessage(1)
+      if (timeRawEntry[2] != "h" || timeRawEntry[5] != ":" || timeRawEntry[8] != "h" ) return this.errorMessage('bad format')
 
       console.log("DEBUG: timeAnalyse => ", timeRawEntry)
       // (9h12:17h23)
@@ -155,14 +159,14 @@ export default {
           || Number.parseInt(this.hourStart, 10) > 23 || Number.parseInt(this.hourEnd, 10) > 23){
         this.goodValues = false
         console.log("DEBUG: BAD VALUES")
-        return this.errorMessage(2)
+        return this.errorMessage('bad hour entry')
       }
       // Minutes check
       if ((Number.parseInt(this.minuteStart, 10) < 0 || Number.parseInt(this.minuteEnd, 10) < 0 )
           || Number.parseInt(this.minuteStart, 10) > 59 || Number.parseInt(this.minuteEnd, 10) > 59){
         this.goodValues = false
         console.log("DEBUG: BAD VALUES")
-        return this.errorMessage(3)
+        return this.errorMessage('bad minute entry')
       }
 
     
@@ -220,30 +224,38 @@ export default {
           }
           // Exemple: (9h10:9h10)
           else if (Number.parseInt(this.minuteEnd, 10) == Number.parseInt(this.minuteStart, 10)){
-            return this.errorMessage(5)
+            return this.errorMessage('bad data entry')
           }
           // Exemple: (9h30:9h10)
           else if (Number.parseInt(this.minuteEnd, 10) < Number.parseInt(this.minuteStart, 10)){
-            return this.errorMessage(4)
+            return this.errorMessage('work time > 12 hour')
           }
         }
-        if(this.minute > 10) this.confirmedMessage = "Employee " + this.employeName + " worked "+ this.hour + "h" + this.minute + " on the " + this.dateToString
-        else this.confirmedMessage = "Employee " + this.employeName + " worked "+ this.hour + "h0" + this.minute + " on the " + this.dateToString
+        if(this.hour >= 10) 
+          if (this.minute >= 10) 
+            this.confirmedMessage = "Employee " + this.employeeName + " worked "+ this.hour + "h" + this.minute + " on the " + this.dateToString
+          else
+            this.confirmedMessage = "Employee " + this.employeeName + " worked "+ this.hour + "h0" + this.minute + " on the " + this.dateToString
 
+        else if(this.hour < 10) 
+          if (this.minute >= 10) 
+            this.confirmedMessage = "Employee " + this.employeeName + " worked 0"+ this.hour + "h" + this.minute + " on the " + this.dateToString
+          else
+            this.confirmedMessage = "Employee " + this.employeeName + " worked 0"+ this.hour + "h0" + this.minute + " on the " + this.dateToString
+            
+        
+        
         
         this.totalTimeWorkedDay = this.hour * 60 + this.minute
-        if(this.totalTimeWorkedDay > 720) return this.errorMessage(4)
+        if(this.totalTimeWorkedDay > 720) return this.errorMessage('work time > 12 hour')
         
-        const returnValues = [this.hour, this.minute, this.employeName, this.dateCleanEntry, this.dateToString, this.totalTimeWorkedDay]
+        const returnValues = [this.hour, this.minute, this.employeeName, this.dateCleanEntry, this.dateToString, this.totalTimeWorkedDay]
         console.log(returnValues)
         return returnValues
       }
       else{
         this.confirmedMessage = "Bad data entry, please respect the 09h00:09h30 format"
       }
-
-      // RETURN STRING TO INT ???
-      // TO DO
     },
 
     setDaystoOff(){
@@ -279,12 +291,11 @@ export default {
       darkTheme: true,
       platformDay: 'Choose a day',
       platformHour: 'Write down your entry and leaving hour',
-      employeName : 'XXX',
+      employeeName : 'XXX',
       activeDay : '',
       email: null,
       username: null,
       showHour : false,
-      dayAlreadyUp : false,
       confirmed : false,
       timeSubmited : false,
       timeSubmitedConfirmed : false,
@@ -317,7 +328,15 @@ export default {
       dateToString : '',
 
       day : String,
-
+      returnData: [
+        { hour: 0 , id:1},
+        { minute: 0 , id:2},
+        { employeeName: '' , id:3},
+        { dateEntry: '' , id:4},
+        { dateToString: '' , id:5},
+        { totalTimeWorkedDay: '0' , id:6},
+      ],
+      
       items: [
         { day: 'Monday' , id:1},
         { day: 'Tuesday' , id:2},
