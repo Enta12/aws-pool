@@ -1,7 +1,7 @@
 <template>
   <div class="mycard">
     <v-card
-        elevation="16"
+        elevation="5"
         class="mx-auto"
     >
       <v-virtual-scroll

@@ -66,7 +66,7 @@ export default {
         { title: 'Login', icon: 'mdi-account', to: "/Login" },
         { title: 'Chart', icon: 'mdi-chart', to: "/Chart" },
         { title: 'workFormCalendar', icon: 'mdi-chart', to: "/workFormCalendar" },
-        { title: 'workFormEntry', icon: 'mdi-chart', to: "/workFormEntry" },
+        { title: 'Admin', icon: 'mdi-account', to: "/Admin" },
       ],
     }
   },
