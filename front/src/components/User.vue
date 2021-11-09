@@ -8,17 +8,20 @@
             <user-info/>
           </v-row>
         </v-col>
-        <v-col cols="6" md="6">
+        <v-col cols="6" md="6" class="justify-center">
+          <WorkingTimes/>
         </v-col>
     </v-container>
 </template>
 
 <script>
 import userInfo from "./userInfo";
+import WorkingTimes from "./WorkingTimes";
 
 export default {
   name: "User",
   components: {
+    WorkingTimes,
     userInfo,
   }
 }
