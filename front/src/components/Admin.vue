@@ -16,9 +16,10 @@
           :items="people"
           item-text="name"
           item-value="name"
-          @click="choice()"
+          @change="choice()"
           ></v-autocomplete>
           <v-card
+            v-if="this.peopleHaveBeenSelected"
             elevation = "5"
             min-width="374"
             min-height="374">
@@ -27,8 +28,6 @@
                 dense
                 :headers="headers"
                 :items="peoplesData"
-                item-key="name"
-                class="elevation-1"
               ></v-data-table>
             </template>
           </v-card>
@@ -71,14 +70,15 @@ export default {
         { name: 'Tucker Smith', id: '4'},
       ],
       peoplesData: [
-        { age: 'Sandra Adams', email: 'sandda@epitech.eu' , id: '1'},
-        { age: 'Ali Connors', email:  'ali@epitech.eu' , id: '2'},
-        { age: 'Trevor Hansen', email:  'trevor@epitech.eu' , id: '3'},
-        { age: 'Tucker Smith', email:  'tucker@epitech.eu' , id: '4'},
+        { firstname: 'Sandra', lastname: 'Adams', age: '22', email: 'sandda@epitech.eu' , id: '1'},
+        { firstname: 'Ali', lastname: 'Connors', age: '24',email:  'ali@epitech.eu' , id: '2'},
+        { firstname: 'Trevor', lastname: 'Hansen', age: '23',email:  'trevor@epitech.eu' , id: '3'},
+        { firstname: 'Tucker', lastname: 'Smith', age: '20',email:  'tucker@epitech.eu' , id: '4'},
       ],
        headers: [
         { text: 'First Name', value: 'firstname' },
         { text: 'Last Name', value: 'lastname' },
+        { text: 'Age', value: 'age' },
         { text: 'Email', value: 'email' },
       ],
     }
