@@ -43,7 +43,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "2a:24:ae:98:32:e1:de:12:b0:98:85:62:9b:0c:98:c3"
+            - "28:89:9f:3b:5f:f7:7a:55:29:01:cb:1b:10:5f:3b:92"
       - run: ssh -o "StrictHostKeyChecking no" circleci@ligne7.pepintrie.fr ls
 workflows:
   version: 2
