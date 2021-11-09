@@ -8,6 +8,8 @@ import Login from "./components/Login";
 import Charts from "./components/Charts";
 import workForm from "./components/workForm";
 import Home from "./components/Home";
+import workFormCalendar from "./components/workFormCalendar";
+import Admin from "./components/Admin";
 Vue.config.productionTip = false
 
 Vue.use(VueRouter)
@@ -19,6 +21,8 @@ const routes = [
   { path: '/workForm', component: workForm },
   { path: '/Home', component: Home },
   { path: '/', component: Home },
+  { path: '/workFormCalendar', component: workFormCalendar },
+  { path: '/Admin', component: Admin },
 ]
 
 const router = new VueRouter({
