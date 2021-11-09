@@ -9,7 +9,7 @@ defmodule TodolistWeb.Endpoint do
     key: "_timemanager_api_key",
     signing_salt: "hl7jSj7G"
   ]
-
+  plug CORSPlug, origin: "*"
   socket "/socket", TodolistWeb.UserSocket,
     websocket: true,
     longpoll: false
