@@ -4,8 +4,16 @@ defmodule Todolist.Application do
   @moduledoc false
 
   use Application
+  alias Todolist.JwtAuthToken
 
   def start(_type, _args) do
+    JwtAuthToken.decode(
+      "blablabla",
+      "-----BEGIN PUBLIC KEY-----
+      blahblahblah
+      yaddayaddayadda
+      -----END PUBLIC KEY-----"
+    )
     children = [
       # Start the Ecto repository
       Todolist.Repo,

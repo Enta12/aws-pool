@@ -2,13 +2,12 @@ use Mix.Config
 
 # Configure your database
 config :timemanager_api, Todolist.Repo,
-  username: System.get_env("PG_USER"),
-  password: System.get_env("PG_PASSWORD"),
-  database: System.get_env("PG_DB"),
-  hostname: System.get_env("PG_HOSTNAME"),
-
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+       username: "postgres",
+       password: "postgres",
+       database: "timemanager_api_dev",
+       hostname: "localhost",
+      show_sensitive_data_on_connection_error: true,
+      pool_size: 10
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -56,3 +55,5 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :joken, default_signer: "secret"

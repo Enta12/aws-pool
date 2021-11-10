@@ -6,9 +6,11 @@ defmodule Todolist.Schemas.User do
   schema "users" do
     field :email, :string
     field :username, :string
+    field :password, :string
 
     has_one :clock, Clock
     has_many :workingtimes, Workingtime
+    has_one :role, Role
 
     timestamps()
   end
