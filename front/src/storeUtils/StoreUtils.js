@@ -30,7 +30,7 @@ function getTimeDifferenciel()
 
 async function GetAllWorkingTimes(userid)
 {
-    let response = await fetch("http://localhost:4000/api/workingtimes/" + userid, { method: 'GET',}).then((res) => {
+    let response = await fetch("http://ligne7.pepintrie.fr:4000/api/workingtimes/" + userid, { method: 'GET',}).then((res) => {
         return res.json()
     }).catch((err) => {
         console.log(err)

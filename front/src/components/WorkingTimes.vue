@@ -149,7 +149,7 @@ export default {
 
        axios
       .get(
-        "http://localhost:4000/api/workingtimes/" + this.$store.state.user.id
+        "http://ligne7.pepintrie.fr:4000/api/workingtimes/" + this.$store.state.user.id
       )
       .then((res) => {
 
