@@ -2,7 +2,7 @@ defmodule Todolist.Schemas do
   @moduledoc """
   The Schemas context.
   """
-
+  import Bcrypt
   import Ecto.Query, warn: false
   alias Todolist.Repo
 
@@ -312,6 +312,7 @@ defmodule Todolist.Schemas do
       %Ecto.Changeset{data: %Workingtime{}}
 
   """
+
   def change_workingtime(%Workingtime{} = workingtime, attrs \\ %{}) do
     Workingtime.changeset(workingtime, attrs)
   end
@@ -383,6 +384,32 @@ defmodule Todolist.Schemas do
     |> Repo.update()
   end
 
+  def signIn(email, password) do
+    case verify_user(email, password) do
+      {:ok, user} ->
+        generate_user_token(user)
+      _ -> {:error, :unauthorized}
+    end
+  end
+
+  def generate_user_token(user) do
+    Todolist.Token.generate_and_sign(%{
+      "user_id" => user.id,
+      #"role_id" => user.role_id,
+      "xsrf_token" => random_string(50)
+    })
+  end
+
+  def random_string(length) do
+      :crypto.strong_rand_bytes(length)
+      |> Base.url_encode64()
+      |> binary_part(0, length)
+  end
+
+  def verify_user(email, password) do
+    Repo.get_by(User, email: email)
+    |> check_pass(password, hide_user: true)
+  end
   @doc """
   Deletes a role.
 

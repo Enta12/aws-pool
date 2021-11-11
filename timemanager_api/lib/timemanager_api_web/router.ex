@@ -10,6 +10,10 @@ defmodule TodolistWeb.Router do
 
     resources "/roles", RoleController, except: [:new, :edit]
 
+    scope "/users" do
+      post "/signIn", UserController, :signIn
+    end
+
     resources "/users", UserController, except: [:new, :edit]
 
     scope "/clocks" do

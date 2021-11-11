@@ -44,7 +44,8 @@ defmodule Todolist.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:cors_plug, "~> 1.5"},
-      {:joken, "~> 2.0-rc0"}
+      {:joken, "~> 2.4.1"},
+      {:bcrypt_elixir, "~> 2.0"}
     ]
   end
 

@@ -45,4 +45,15 @@ defmodule TodolistWeb.UserController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def signIn(conn, %{"email" => email, "password" => password}) do
+    case Schemas.signIn(email, password) do
+    {:ok, token, claims} ->
+      conn
+      |> put_resp_cookie("session_jwt", token)
+      |> render("jwt.json", claims: claims)
+      _ ->
+      {:error, :unauthorized}
+    end
+  end
 end
