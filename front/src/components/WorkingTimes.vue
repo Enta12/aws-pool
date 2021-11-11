@@ -5,25 +5,6 @@
       <strong><h2>WorkingTimes list</h2></strong>
       </span>
       <v-list class="listCard">
-         <!-- <template>
-                <v-expansion-panels>
-                  <v-expansion-panel
-                    v-for="(item,i) in 12"
-                    :key="i"
-                  >
-                    <v-expansion-panel-header >
-                      {{months[i]}}
-                    </v-expansion-panel-header>
-                    <v-expansion-panel-content  v-if="month[i] == test" >
-                      <v-list-item v-for="i in test" :key="i">
-
-                      </v-list-item>
-                     {{i}}
-
-                    </v-expansion-panel-content>
-                  </v-expansion-panel>
-                </v-expansion-panels>
-            </template> -->
               <template>
                 <v-expansion-panels focusable  multiple>
                   <v-expansion-panel
@@ -84,44 +65,13 @@
         class="mycard"
         item-height="45"
       >
-        <!-- <template v-slot:default="{ item }" v-if = "responseAvailable == true" >
-          
-          <v-list-item  :key="item" >
 
-            <v-list-item-action>
-              <v-btn
-                  fab
-                  small
-                  depressed
-                  color="primary"
-              >
-               {{ item }}
-              </v-btn>
-            </v-list-item-action>
-
-            <v-list-item-content>
-              <v-list-item-title>
-                User Database Record <strong>ID {{ item.id }}</strong>
-              </v-list-item-title>
-            </v-list-item-content>
-
-            <v-list-item-action>
-              <v-icon small>
-                mdi-open-in-new
-              </v-icon>
-            </v-list-item-action>
-          </v-list-item>
-        
-         
-          <v-divider></v-divider>
-        </template>-->
       </v-virtual-scroll>
     </v-card>
   </div>
 </template>
 
 <script>
-// const iduser =this.$store.state.user.id;
 import axios from "axios";
 import moment from "moment";
 import Vue from 'vue';
@@ -149,7 +99,7 @@ export default {
 
        axios
       .get(
-        "http://localhost:4000/api/workingtimes/" + this.$store.state.user.id
+        "http://ligne7.pepintrie.fr:4000/api/workingtimes/" + this.$store.state.user.id
       )
       .then((res) => {
 
@@ -280,7 +230,7 @@ export default {
 }
 .enddate {
   font-size: 20;
-  width: "30%";
+  width: 30%;
   background-color: green;
 }
 .headpanel {

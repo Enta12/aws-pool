@@ -46,7 +46,7 @@ export default {
   mounted() {
     let test = {clock: {time: "", status: false}}
     if (this.$store.state.user.isConnected) {
-      fetch("http://localhost:4000/api/clocks/" + this.$store.state.user.id, {
+      fetch("http://ligne7.pepintrie.fr:4000/api/clocks/" + this.$store.state.user.id, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -70,7 +70,7 @@ export default {
       {
         this.$store.commit('SetPointingDate', {date_str :date.date_str, date : date.date})
         let test = {clock: {time: date.date_str, status: false}}
-          fetch("http://localhost:4000/api/clocks/" + this.$store.state.user.id, {
+          fetch("http://ligne7.pepintrie.fr:4000/api/clocks/" + this.$store.state.user.id, {
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'

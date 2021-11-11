@@ -57,11 +57,12 @@ export default {
   methods : {
      async SignIn() {
       console.log("pass")
-       let response = await fetch("http://localhost:4000/api/users?email=" + this.email + "&username=" + this.username, { method: 'GET',}).then((res) => {
+       let response = await fetch("http://ligne7.pepintrie.fr:4000/api/users?email=" + this.email + "&username=" + this.username, { method: 'GET',}).then((res) => {
          return res.json()
       }).catch((err) => {
         console.log(err)
       })
+       console.log(response)
        if (response.data.length !== 1)
          return false
        else {
