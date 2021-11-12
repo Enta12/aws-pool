@@ -15,6 +15,7 @@ defmodule TodolistWeb.Router do
     end
 
     resources "/users", UserController, except: [:new, :edit]
+    resources "/roles", RoleController, except: [:new, :edit]
 
     scope "/clocks" do
       get "/:userID", ClockController, :show
