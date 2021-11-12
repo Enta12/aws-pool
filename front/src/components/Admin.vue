@@ -1,16 +1,17 @@
 <template>
     <v-container fill-height fluid>
-        <v-col cols="6" md="6" style="border: 1px">
-    
+        <v-col style="border: 1px">
+        <div
+          max-widht="50">
           <h3 class="center" align-center > 
             {{ "Search an user by name or firstname" }} 
           </h3>
 
           <v-autocomplete
+
           clearable
           deletable-chips
           dense
-          filled
           rounded
           solo
           v-model = "pickedValue"
@@ -23,11 +24,11 @@
           <v-card
             v-if="this.peopleHaveBeenSelected"
             elevation = "5"
-            min-width="374"
+            max-widht = "50%"
             min-height="100">
-            <p>
-            {{ this.dataToDisplay.username}}
-            </p>
+            
+            <p> {{ this.dataToDisplay.username}} </p>
+
             <p>
             {{ this.dataToDisplay.age}} 
             </p>
@@ -35,35 +36,67 @@
             {{ this.dataToDisplay.email}} 
             </p>
           </v-card>
-            <v-btn class="button" color="info" v-on:click="addWorkingTime()" flat @click="SignUp">
-              ADD
-            </v-btn>
-            <v-spacer></v-spacer>
-            <v-btn class="button" color="info" v-on:click="deleteWorkingTime()" :large="$vuetify.breakpoint.smAndUp">
-              DELETE
-            </v-btn>
+        </div>
         </v-col>
+      <v-row cols="3" >
         
+          <div v-if="this.showCalendar"> 
+            <v-date-picker v-model="pickedDate" @change="dayButtonClick(pickedDate)">
+            </v-date-picker>
+          </div>
 
+          <v-card
+            v-if="this.showWorkingTimes"
+            elevation = "5">
 
-        <v-col cols="1" md="6">
-            <WorkingTimes/>
-        </v-col>
+            <v-divider></v-divider>
+            <p> {{ "Worked time of " + this.dataToDisplay.username + " on the " + this.dateToString}} </p>
+            <v-divider></v-divider>
+          </v-card>
+      </v-row>
+      <v-row>
+        <v-btn class="button" color="info" v-on:click="addWorkingTime()" flat>
+          ADD
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn class="button" color="info" v-on:click="deleteWorkingTime()" :large="$vuetify.breakpoint.smAndUp">
+          DELETE
+        </v-btn>
+      </v-row>
     </v-container>
 </template>
 
 <script>
 // import userInfo from "./userInfo";
-import WorkingTimes from "./WorkingTimes";
+// import WorkingTimes from "./WorkingTimes";
 
 export default {
   name: "User",
   components: {
     // userInfo,
-    WorkingTimes
+    // WorkingTimes
   },
   methods : {
+
+    dayButtonClick(date){
+      this.showWorkingTimes = true
+      this.dateAnalyse(date)
+    },
+    dateAnalyse(dateRawEntry){
+      // 2021-11-20 dateRawEntry
+      const dateSplit = dateRawEntry.split('-')  
+      this.dateCleanEntry = dateRawEntry
+
+      // Get month from month number
+      this.monthEntry = this.monthItems[dateSplit[1]-1].month
+
+      this.dateToString = dateSplit[2] + " " + this.monthEntry + " " + dateSplit[0]
+      console.log(this.dateToString)
+    },
+
     choice(username){
+      this.showCalendar = true
+      console.log(this.showCalendar)
       const map1 = this.peoplesData.map(people => 
       {
         if (people.username === username) this.dataToDisplay = people
@@ -75,9 +108,11 @@ export default {
       this.peopleHaveBeenSelected = true
       this.getAllData()
     },
-    addWorkingTime(){
+    clear(){
     },
 
+    addWorkingTime(){
+    },
     deleteWorkingTime(){
     },
 
@@ -104,10 +139,14 @@ export default {
   data () {
     return {
       peopleHaveBeenSelected : false,
+      showWorkingTimes : false,
+      showCalendar : false,
       dataToDisplay : 'NO data to show',
       dataToString : '',
       dataTest : [],
-
+      dateCleanEntry : '',
+      dateToString : '',
+      pickedDate : '',
 
       people: [
         { name: 'Sandra Adams', id: '1'},
@@ -126,6 +165,20 @@ export default {
         { text: 'Age', value: 'age' },
         { text: 'Email', value: 'email' },
       ],
+      monthItems: [
+        { month: 'January' , id:1},
+        { month: 'February' , id:2},
+        { month: 'March' , id:3},
+        { month: 'April' , id:4},
+        { month: 'May' , id:5},
+        { month: 'June' , id:6},
+        { month: 'July' , id:7},
+        { month: 'August' , id:8},
+        { month: 'September' , id:9},
+        { month: 'October' , id:10},
+        { month: 'November' , id:11},
+        { month: 'December' , id:12},
+      ]
     }
   }
 }
