@@ -61,9 +61,9 @@ export default {
       imgAvatar : this.$store.state.user.imgAvatar,
       id : this.$store.state.user.id,
       items: [
+        { title: 'Login', icon: 'mdi-account', to: "/Login" },
         { title: 'Home', icon: 'mdi-home-city', to: "/Home" },
         { title: 'My Account', icon: 'mdi-account', to: "/User" },
-        { title: 'Login', icon: 'mdi-account', to: "/Login" },
         { title: 'Chart', icon: 'mdi-chart', to: "/Chart" },
         { title: 'workFormCalendar', icon: 'mdi-chart', to: "/workFormCalendar" },
         { title: 'Admin', icon: 'mdi-account', to: "/Admin" },
