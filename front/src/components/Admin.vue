@@ -15,7 +15,7 @@
           rounded
           solo
           v-model = "pickedValue"
-          :items="peoplesData"
+          :items="this.apiData.data"
           item-text="username"
           item-value="username"
           item-key="email"
@@ -30,10 +30,10 @@
             <p> {{ this.dataToDisplay.username}} </p>
 
             <p>
-            {{ this.dataToDisplay.age}} 
+            {{ this.dataToDisplay.email}} 
             </p>
             <p>
-            {{ this.dataToDisplay.email}} 
+            {{ this.dataToDisplay.id}} 
             </p>
           </v-card>
         </div>
@@ -96,15 +96,13 @@ export default {
 
     choice(username){
       this.showCalendar = true
-      console.log(this.showCalendar)
-      const map1 = this.peoplesData.map(people => 
+      this.apiData.data.map(people => 
       {
         if (people.username === username) this.dataToDisplay = people
       });
 
       this.dataToString = this.dataToDisplay.username + " " + this.dataToDisplay.age + " " + this.dataToDisplay.email
 
-      console.log(find, map1);
       this.peopleHaveBeenSelected = true
       this.getAllData()
     },
@@ -117,23 +115,32 @@ export default {
     },
 
     async getAllData() {
-      let response = await fetch("http://ligne7.pepintrie.fr:4000/users", 
-      { method: 'GET',
-        mode: 'cors',
-        headers: {
-          'Access-Control-Allow-Origin':'*',
-          'Content-Type' : 'application/json'
-        },
-      })  
+      let response = await fetch("http://ligne7.pepintrie.fr:4000/api/users", 
+      { method: 'GET'})  
+
       .then((res) => {
         return res.json() })
       .catch((err) => {
         console.log(err) })
       
-      this.dataTest = await response.json()
-      console.log(response)
-    }
+      this.apiData = await response  
+      console.log(this.apiData)
+      // console.log(response)
+      // this.displayData()
+    },
+
+
+    displayData(){
+      for (let i = 0; i < this.apiData.data.length; i++) { 
+        console.log("DEBUG:" + this.apiData.data[i].username)
+        console.log("DEBUG:" + this.apiData.data[i].email)
+        console.log("DEBUG:" + this.apiData.data[i].id)
+      }
+    },
     
+  },
+  beforeMount(){
+    this.getAllData()
   },
 
   data () {
@@ -143,10 +150,11 @@ export default {
       showCalendar : false,
       dataToDisplay : 'NO data to show',
       dataToString : '',
-      dataTest : [],
+      apiData : [],
       dateCleanEntry : '',
       dateToString : '',
       pickedDate : '',
+      pickedValue : '',
 
       people: [
         { name: 'Sandra Adams', id: '1'},
