@@ -3,14 +3,14 @@ defmodule Todolist.Schemas.Role do
   import Ecto.Changeset
 
   schema "roles" do
-    field :name, :string
+    field :label, :string
     timestamps()
   end
 
   @doc false
   def changeset(role, attrs) do
     role
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:label])
+    |> validate_required([:label])
   end
 end

@@ -9,6 +9,7 @@ defmodule Todolist.Schemas.User do
     field :username, :string
     field :password_hash, :string
 
+    has_one :role, Role
     has_one :clock, Clock
     has_many :workingtimes, Workingtime
     #has_one :role, Role
