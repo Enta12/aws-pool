@@ -63,10 +63,10 @@ export default {
       items: [
         { title: 'Login', icon: 'mdi-account', to: "/Login" },
         { title: 'Home', icon: 'mdi-home-city', to: "/Home" },
-        { title: 'My Account', icon: 'mdi-account', to: "/User" },
+        { title: 'My Account', icon: 'mdi-card-account-details', to: "/User" },
         { title: 'Chart', icon: 'mdi-chart', to: "/Chart" },
-        { title: 'workFormCalendar', icon: 'mdi-chart', to: "/workFormCalendar" },
-        { title: 'Admin', icon: 'mdi-account', to: "/Admin" },
+        { title: 'workFormCalendar', icon: 'mdi-calendar', to: "/workFormCalendar" },
+        { title: 'Admin', icon: 'mdi-shield-crown', to: "/Admin" },
       ],
     }
   },
