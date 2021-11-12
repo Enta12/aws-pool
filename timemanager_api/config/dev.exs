@@ -2,10 +2,10 @@ use Mix.Config
 
 # Configure your database
 config :timemanager_api, Todolist.Repo,
-       username: System.get_env(),
-       password: System.get_env(),
-       database: System.get_env(),
-       hostname: System.get_env(),
+       username: System.get_env("PG_USER"),
+       password: System.get_env("PG_PASSWORD"),
+       database: System.get_env("PG_DB"),
+       hostname: System.get_env("PG_HOSTNAME"),
       show_sensitive_data_on_connection_error: true,
       pool_size: 10
 
