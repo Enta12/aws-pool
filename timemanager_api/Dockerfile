@@ -22,9 +22,9 @@ RUN mix archive.install hex phx_new 1.5.3 --force
 
 RUN mix deps.get
 
-RUN chmod +x reset_db.sh
+RUN chmod +x entrypoint.sh
 
 
 EXPOSE 4000
 
-CMD ./reset_db.sh
+CMD ./entrypoint.sh
