@@ -22,6 +22,7 @@ users = [
   %{username: "Sauterelle", email: "sauterelle@epitech.eu", motdepasse: "motdepasse"},
   %{username: "Flemkiche", email: "flemkiche@epitech.eu", motdepasse: "motdepasse"},
   %{username: "superbossdu91", email: "superbossdu91@epitech.eu", motdepasse: "motdepasse"},
+  %{username: "samy", email: "sboulenoir@hotmail.fr", motdepasse: "motdepasse"}
 ]
 
 Enum.each(roles, fn role -> Schemas.create_role(role) end)
