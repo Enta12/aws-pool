@@ -32,7 +32,7 @@
         <v-list-item
             v-for="item in items"
             :key="item.title"
-            @click="ChangeRoute(item.to)"
+            v-bind:to="item.to"
         >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>

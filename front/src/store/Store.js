@@ -15,7 +15,8 @@ const store = new Vuex.Store({
             email : "",
             id : -1,
             PointingDate : {},
-            TimeElapsed : ""
+            TimeElapsed : "",
+            role : 0
         }
     },
     mutations: {
@@ -34,6 +35,7 @@ const store = new Vuex.Store({
             state.user.username = param.username
             state.user.email = param.email
             state.user.isLoggedIn = true
+            state.user.role = param.role
         },
         DisconnectUser(state) {
             state.user.id = -1

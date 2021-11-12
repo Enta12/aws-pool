@@ -44,7 +44,7 @@ export default {
     }
   },
   mounted() {
-    let test = {clock: {time: "", status: false}}
+    let test = {clock: {time: "1999-10-10 10:10:10", status: false}}
     if (this.$store.state.user.isConnected) {
       fetch("http://ligne7.pepintrie.fr:4000/api/clocks/" + this.$store.state.user.id, {
         headers: {
@@ -54,8 +54,7 @@ export default {
         method: 'POST',
         body: JSON.stringify(test)
       })
-          .then((response) => {
-            console.log(response.json())
+          .then( () => {
           }).catch((err) => {
         console.log("MY ERROR = ", err)
       })
@@ -64,12 +63,11 @@ export default {
   methods: {
     GetRemainingTime() {
     },
-    Pointer() {
+    async Pointer() {
       let date = getDateTime()
-      if (this.$store.state.user.isConnected === false)
-      {
         this.$store.commit('SetPointingDate', {date_str :date.date_str, date : date.date})
-        let test = {clock: {time: date.date_str, status: false}}
+        console.log(date)
+        let test = {clock: {time: date.date_str, status: !this.$store.state.user.isConnected}}
           fetch("http://ligne7.pepintrie.fr:4000/api/clocks/" + this.$store.state.user.id, {
             headers: {
               'Accept': 'application/json',
@@ -78,16 +76,12 @@ export default {
             method: 'PUT',
             body: JSON.stringify(test)
           })
-              .then((response) => {
-                console.log(response.json())
+              .then(async (response) => {
+                console.log("PUT = ", await response.json())
               }).catch((err) => {
             console.log("MY ERROR = ", err)
           })
         this.$store.commit("pointer")
-      }
-      else {
-        this.$store.commit("pointer")
-      }
     },
     Redirect() {
       if (this.$store.state.user.isLoggedIn === true) {

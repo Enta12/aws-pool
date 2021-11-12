@@ -40,13 +40,25 @@ export default {
   },
   methods : {
     async ChangeForDay() {
-
+      let response;
       if (this.actual_canva === 0) {
         this.DataChart.data.datasets[0].data
-      }
+        response = await fetch("http://ligne7.pepintrie.fr:4000/api/workingtimes/" + this.$store.state.user.id, {method : "GET"}).then((res) => {
+          return res.json()
+        }).catch((err) => {
+          console.log("ERROR = ", err)
+        })}
+      console.log(response)
     },
-    ChangeForWeek() {
-
+    async ChangeForWeek() {
+      let response;
+      if (this.actual_canva === 0) {
+        response = await fetch("http://ligne7.pepintrie.fr:4000/api/workingtimes/" + this.$store.state.user.id, {method : "GET"}).then((res) => {
+          return res.json()
+        }).catch((err) => {
+          console.log(err)
+        })}
+      console.log(response)
     },
     PutLineChart() {
       this.DataChart = LineChart
