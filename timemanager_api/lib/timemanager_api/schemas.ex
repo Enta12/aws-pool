@@ -395,6 +395,8 @@ defmodule Todolist.Schemas do
   def generate_user_token(user) do
     Todolist.Token.generate_and_sign(%{
       "user_id" => user.id,
+      "username" => user.username,
+      "email" => user.email,
       #"role_id" => user.role_id,
       "xsrf_token" => random_string(50)
     })
