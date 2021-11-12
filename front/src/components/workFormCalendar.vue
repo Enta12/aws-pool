@@ -41,7 +41,7 @@
             </form>
             
             <v-card-actions :class="{ 'pa-3': $vuetify.breakpoint.smAndUp }">
-              <v-btn color="info" v-on:click=" clear()" flat @click="SignUp">
+              <v-btn color="info" v-on:click=" clear()">
                 RETURN
               </v-btn>
               <v-spacer></v-spacer>
