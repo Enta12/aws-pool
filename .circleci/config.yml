@@ -41,7 +41,7 @@ jobs:
     docker:
       - image: cimg/node:16.13.0-browsers
     steps:
-      - run: ssh -oStrictHostKeyChecking=no -v circleci@ligne7.pepintrie.fr ./aws-pool/rebuild.sh
+      - run: ssh -oStrictHostKeyChecking=no circleci@ligne7.pepintrie.fr ./aws-pool/rebuild.sh
 workflows:
   version: 2
   build_and_test:
