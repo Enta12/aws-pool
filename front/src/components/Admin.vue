@@ -35,11 +35,11 @@
             {{ this.dataToDisplay.email}} 
             </p>
           </v-card>
-            <v-btn class="button" color="info" v-on:click=" clear()" flat @click="SignUp">
+            <v-btn class="button" color="info" v-on:click="addWorkingTime()" flat @click="SignUp">
               ADD
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn class="button" color="info" v-on:click="confirm(dateRawEntry)" :large="$vuetify.breakpoint.smAndUp">
+            <v-btn class="button" color="info" v-on:click="deleteWorkingTime()" :large="$vuetify.breakpoint.smAndUp">
               DELETE
             </v-btn>
         </v-col>
@@ -75,14 +75,20 @@ export default {
       this.peopleHaveBeenSelected = true
       this.getAllData()
     },
+    addWorkingTime(){
+    },
+
+    deleteWorkingTime(){
+    },
 
     async getAllData() {
       let response = await fetch("http://ligne7.pepintrie.fr:4000/users", 
       { method: 'GET',
         mode: 'cors',
         headers: {
-          'Access-Control-Allow-Origin':'*'
-        }
+          'Access-Control-Allow-Origin':'*',
+          'Content-Type' : 'application/json'
+        },
       })  
       .then((res) => {
         return res.json() })
@@ -126,9 +132,6 @@ export default {
 </script>
 
 <style scoped>
-.Column{
-
-}
 .button {
   background-color: #04AA6D; /* Green */
   border: none;
