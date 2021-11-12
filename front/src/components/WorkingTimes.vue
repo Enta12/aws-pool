@@ -11,18 +11,14 @@
                     v-for="(item,i) in 12"
                     :key="i"
                     v-model="panel"
-                   
                   >
                     <v-expansion-panel-header class="headpanel ">
                      <span class='text-center'> <h2>{{months[i]}}</h2></span>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class='justify-center' >
-                      
-                      
                     <v-expansion-panel
                     v-for="(item,itm) in 7"
                     :key="itm"
-                   
                     multiple
                     >
                      <v-expansion-panel-header class="headpanelbis ">
@@ -44,15 +40,11 @@
                              </div>
                            </v-card>
    
-                      </v-list-item>
-                      
-                      </v-list>
+                          </v-list-item>
+                          
+                          </v-list>
                        </v-expansion-panel-content>
                     </v-expansion-panel>  
-                     
-                     
-
-
                     </v-expansion-panel-content>
                   </v-expansion-panel>
                 </v-expansion-panels>

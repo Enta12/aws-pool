@@ -13,26 +13,37 @@
           filled
           rounded
           solo
-          :items="people"
-          item-text="name"
-          item-value="name"
-          @click="choice()"
+          v-model = "pickedValue"
+          :items="peoplesData"
+          item-text="username"
+          item-value="username"
+          item-key="email"
+          @change="choice(pickedValue)"
           ></v-autocomplete>
           <v-card
+            v-if="this.peopleHaveBeenSelected"
             elevation = "5"
             min-width="374"
-            min-height="374">
-            <template>  
-              <v-data-table
-                dense
-                :headers="headers"
-                :items="peoplesData"
-                item-key="name"
-                class="elevation-1"
-              ></v-data-table>
-            </template>
+            min-height="100">
+            <p>
+            {{ this.dataToDisplay.username}}
+            </p>
+            <p>
+            {{ this.dataToDisplay.age}} 
+            </p>
+            <p>
+            {{ this.dataToDisplay.email}} 
+            </p>
           </v-card>
+            <v-btn class="button" color="info" v-on:click="addWorkingTime()" flat @click="SignUp">
+              ADD
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn class="button" color="info" v-on:click="deleteWorkingTime()" :large="$vuetify.breakpoint.smAndUp">
+              DELETE
+            </v-btn>
         </v-col>
+        
 
 
         <v-col cols="1" md="6">
@@ -52,17 +63,51 @@ export default {
     WorkingTimes
   },
   methods : {
-    choice(){
+    choice(username){
+      const map1 = this.peoplesData.map(people => 
+      {
+        if (people.username === username) this.dataToDisplay = people
+      });
+
+      this.dataToString = this.dataToDisplay.username + " " + this.dataToDisplay.age + " " + this.dataToDisplay.email
+
+      console.log(find, map1);
       this.peopleHaveBeenSelected = true
-      this.dataToDisplay = "XD"
-      console.log("DEBUG: HEY choice()")
+      this.getAllData()
     },
+    addWorkingTime(){
+    },
+
+    deleteWorkingTime(){
+    },
+
+    async getAllData() {
+      let response = await fetch("http://ligne7.pepintrie.fr:4000/users", 
+      { method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Access-Control-Allow-Origin':'*',
+          'Content-Type' : 'application/json'
+        },
+      })  
+      .then((res) => {
+        return res.json() })
+      .catch((err) => {
+        console.log(err) })
+      
+      this.dataTest = await response.json()
+      console.log(response)
+    }
+    
   },
 
   data () {
     return {
       peopleHaveBeenSelected : false,
       dataToDisplay : 'NO data to show',
+      dataToString : '',
+      dataTest : [],
+
 
       people: [
         { name: 'Sandra Adams', id: '1'},
@@ -71,14 +116,14 @@ export default {
         { name: 'Tucker Smith', id: '4'},
       ],
       peoplesData: [
-        { age: 'Sandra Adams', email: 'sandda@epitech.eu' , id: '1'},
-        { age: 'Ali Connors', email:  'ali@epitech.eu' , id: '2'},
-        { age: 'Trevor Hansen', email:  'trevor@epitech.eu' , id: '3'},
-        { age: 'Tucker Smith', email:  'tucker@epitech.eu' , id: '4'},
+        { username: 'Sandra Adams', age: '22', email: 'sandda@epitech.eu' , id: '1'},
+        { username: 'Ali Connors', age: '24',email:  'ali@epitech.eu' , id: '2'},
+        { username: 'Trevor Hansen', age: '23',email:  'trevor@epitech.eu' , id: '3'},
+        { username: 'Tucker Smith', age: '20',email:  'tucker@epitech.eu' , id: '4'},
       ],
        headers: [
-        { text: 'First Name', value: 'firstname' },
-        { text: 'Last Name', value: 'lastname' },
+        { text: 'username', value: 'username' },
+        { text: 'Age', value: 'age' },
         { text: 'Email', value: 'email' },
       ],
     }
@@ -87,7 +132,19 @@ export default {
 </script>
 
 <style scoped>
-.Column{
+.button {
+  background-color: #04AA6D; /* Green */
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
 
+  min-width: 300;
+  max-width: 600;
 }
 </style>
