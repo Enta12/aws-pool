@@ -117,6 +117,7 @@ export default {
     },
 
     errorMessage(errorType){
+      this.showHour = true
       console.log("DEBUG ERROR MESSAGE" + errorType)
       if (errorType == 'bad format') 
         this.confirmedMessage = "Bad data entry, please respect the 09h00:09h30 format"
@@ -289,7 +290,7 @@ export default {
   data () {
     return {
       darkTheme: true,
-      platformDay: 'Choose a day',
+      platformDay: 'Choose a day to add a working time',
       platformHour: 'Write down your entry and leaving hour',
       employeeName : 'XXX',
       activeDay : '',

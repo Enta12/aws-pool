@@ -49,7 +49,7 @@ export default {
   data () {
     return {
       darkTheme: true,
-      platformName: 'Pointeuse',
+      platformName: 'Time Clock',
       email: null,
       username: null
     }
