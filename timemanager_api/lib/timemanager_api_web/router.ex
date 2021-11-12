@@ -5,8 +5,13 @@ defmodule TodolistWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :jwt_auth do
+    plug TodolistWeb.JwtAuthPlug
+  end
+
   scope "/api", TodolistWeb do
     pipe_through :api
+    pipe_through :jwt_auth
 
     resources "/roles", RoleController, except: [:new, :edit]
 

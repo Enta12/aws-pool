@@ -56,4 +56,6 @@ defmodule TodolistWeb.UserController do
       {:error, :unauthorized}
     end
   end
+
+  #fonction logout pour suprimer les cookies
 end
