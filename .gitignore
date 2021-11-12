@@ -26,5 +26,5 @@ timemanager_api/timemanager_api-*.tar
 # we ignore priv/static. You may want to comment
 # this depending on your deployment strategy.
 timemanager_api/priv/static/
-
+aws-pool/front/package-lock.json
 .env
