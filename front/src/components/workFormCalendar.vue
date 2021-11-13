@@ -41,7 +41,7 @@
             </form>
             
             <v-card-actions :class="{ 'pa-3': $vuetify.breakpoint.smAndUp }">
-              <v-btn color="info" v-on:click=" clear()" flat @click="SignUp">
+              <v-btn color="info" v-on:click=" clear()">
                 RETURN
               </v-btn>
               <v-spacer></v-spacer>
@@ -250,7 +250,7 @@ export default {
         this.totalTimeWorkedDay = this.hour * 60 + this.minute
         if(this.totalTimeWorkedDay > 720) return this.errorMessage('work time > 12 hour')
         
-        const returnValues = [this.hour, this.minute, this.employeeName, this.dateCleanEntry, this.dateToString, this.totalTimeWorkedDay]
+        const returnValues = [this.hour, this.minute, this.startT, this.endT, this.employeeName, this.dateCleanEntry, this.dateToString, this.totalTimeWorkedDay]
         console.log(returnValues)
         return returnValues
       }

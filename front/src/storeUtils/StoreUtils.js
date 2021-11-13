@@ -1,11 +1,20 @@
 function getDateTime() {
-    let daytime = new Date().toLocaleString()
+    let daytime = new Date()
     let daytime_tmp = new Date()
-    let parsed_data = daytime.split(',')
-    parsed_data[1] = parsed_data[1].substring(1)
-    parsed_data[1] = parsed_data[1].slice(0, -3)
-    return({date_str : parsed_data[0] + " " + parsed_data[1], date : daytime_tmp})
+    let month = addZero(daytime.getMonth().toString())
+    let day = addZero(daytime.getDay().toString())
+    let hour = addZero(daytime.getHours().toString())
+    let minute = addZero(daytime.getMinutes().toString())
+    let second = addZero(daytime.getSeconds().toString())
 
+    return({date_str : daytime.getFullYear() + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second, date : daytime_tmp})
+}
+
+function addZero(time) {
+    if (time.length <= 1) {
+        time = "0" + time
+    }
+    return time
 }
 
 async function getAllWorkingTimeForTheDay() {
@@ -24,10 +33,6 @@ async function getAllWorkingTimeForTheDay() {
     return workingtimesOfToday
 }
 
-function getTimeDifferenciel()
-{
-}
-
 async function GetAllWorkingTimes(userid)
 {
     let response = await fetch("http://ligne7.pepintrie.fr:4000/api/workingtimes/" + userid, { method: 'GET',}).then((res) => {
@@ -38,9 +43,10 @@ async function GetAllWorkingTimes(userid)
     return response.data
 }
 
+
+
 export {
     getDateTime,
     getAllWorkingTimeForTheDay,
-    GetAllWorkingTimes,
-    getTimeDifferenciel
+    GetAllWorkingTimes
 }
