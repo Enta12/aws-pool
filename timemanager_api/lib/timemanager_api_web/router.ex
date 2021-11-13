@@ -11,7 +11,7 @@ defmodule TodolistWeb.Router do
 
   scope "/api", TodolistWeb do
     pipe_through :api
-    pipe_through :jwt_auth
+    #pipe_through :jwt_auth
 
     resources "/roles", RoleController, except: [:new, :edit]
 
