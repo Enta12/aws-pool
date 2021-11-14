@@ -1,6 +1,5 @@
 <template>
   <div class="working-times">
- 
     <v-list class="listCard">
       <div>
         <v-toolbar flat>
@@ -41,75 +40,205 @@
           </v-menu>
         </v-toolbar>
         <template>
-        <v-calendar
-          @click:more="viewDay"
-          @click:date="viewDay"
-          ref="calendar"
-          v-model="focus"
-          color="primary"
-          :events="dataWorks"
-          :event-color="getEventColor"
-          :type="type"
-          @click:event="showEvent"
-          @change="updateRange"
-        >
+          <v-calendar
+            @click:more="viewDay"
+            @click:date="viewDay"
+            ref="calendar"
+            v-model="focus"
+            color="primary"
+            :events="dataWorks"
+            :event-color="getEventColor"
+            :type="type"
+            @click:event="showEvent"
+            @change="updateRange"
+          >
+          </v-calendar>
+        </template>
 
-        
-        </v-calendar>
- </template>
-  <v-menu
+        <v-menu
           v-model="selectedOpen"
           :close-on-content-click="false"
           :activator="selectedElement"
           offset-x
         >
-          <v-card
-            color="grey lighten-4"
-            min-width="350px"
-            flat
-          >
-            <v-toolbar
-              :color="selectedEvent.color"
-              dark
-            >
-              <v-btn icon>
+          <v-card color="grey lighten-4" min-width="350px" flat>
+            <v-toolbar :color="selectedEvent.color" dark>
+              <v-btn icon @click="showModal = !showModal">
                 <v-icon>mdi-pencil</v-icon>
-                
               </v-btn>
 
-              <v-toolbar-title v-html="selectedEvent.id_works"></v-toolbar-title>
+              <v-toolbar-title
+                v-html="selectedEvent.id_works"
+              ></v-toolbar-title>
               <v-spacer></v-spacer>
               <v-btn icon>
                 <v-icon>mdi-close</v-icon>
               </v-btn>
-           
             </v-toolbar>
             <div class="d-flex justify-center">
               <v-card-text class="justify-center align-center">
-              
-              <h3>Id : {{selectedEvent.id}}</h3>
-            </v-card-text>
-           <v-card-text class="justify-center align-center">
-          
-              <h3 > start : {{selectedEvent.start}}</h3>
-            </v-card-text>
+                <h3>Id : {{ selectedEvent.id }}</h3>
+              </v-card-text>
+              <v-card-text class="justify-center align-center">
+                <h3>start : {{ selectedEvent.start }}</h3>
+              </v-card-text>
               <v-card-text>
-             
-              <h3> End : {{selectedEvent.end}} </h3>
-            </v-card-text>
+                <h3>End : {{ selectedEvent.end }}</h3>
+              </v-card-text>
             </div>
+
             <v-card-actions>
-              <v-btn
-                text
-                color="secondary"
-                @click="selectedOpen = false"
-              >
+              <v-btn text color="secondary" @click="selectedOpen = false">
                 Cancel
               </v-btn>
             </v-card-actions>
+
+            <modal
+              v-if="showModal"
+              @close="showModal = false"
+              class="justify-center align-center"
+            >
+              <span class="text-center align-center align-content-center"
+                ><h3 slot="header">Edit workingtimes</h3> </span
+              >
+  
+              <div class="d-flex align-center boxEdit">
+
+                <div class="inputEditBox">
+                  <v-menu
+                  class="dateBox"
+                    ref="menuStartDate"
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :return-value.sync="dateRangeText"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="dateRangeText"
+                        label="Picker in menu date"
+                        prepend-icon="mdi-calendar"
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                     
+                    </template>
+
+                    <v-date-picker v-model="lastDate" no-title scrollable range>
+                      <v-spacer></v-spacer>
+                      <v-btn text color="primary" @click="menuStartDate = false">
+                        Cancel
+                      </v-btn>
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="$refs.menuStartDate.save(lastDate)"
+                      >
+                        OK
+                      </v-btn>
+                    </v-date-picker>
+                  </v-menu>
+                  <div class="d-flex " >
+                  <v-menu
+                        ref="menuStartTime"
+                        v-model="clockStart"
+                        :close-on-content-click="false"
+                        :nudge-right="40"
+                        :return-value.sync="time"
+                        transition="scale-transition"
+                        offset-y
+                        max-width="300px"
+                        min-width="290px"
+                  >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              v-model="lastTime[0]"
+                              label="start time"
+                              prepend-icon="mdi-clock-time-four-outline"
+                              readonly
+                              v-bind="attrs"
+                              v-on="on"
+                            ></v-text-field>
+                            
+                          </template>
+                          <v-time-picker
+                            use-seconds
+                            v-if="clockStart"
+                            v-model="lastTime[0]"
+                            full-width
+                            @click:minute="$refs.menuStartTime.save(lastTime[0])"
+                          ></v-time-picker>
+                          <v-spacer></v-spacer>
+                          <v-btn text color="primary" @click="modal2 = false">
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.dialog.save(lastTime[0])"
+                          >
+                            OK
+                          </v-btn>
+                  </v-menu>
+
+                        <v-menu
+                        ref="menuEndTime"
+                        v-model="clockEnd"
+                        :close-on-content-click="false"
+                        :nudge-right="40"
+                        :return-value.sync="time"
+                        transition="scale-transition"
+                        offset-y
+                        max-width="300px"
+                        min-width="290px"
+                      >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              v-model="lastTime[1]"
+                              label="end time"
+                              prepend-icon="mdi-clock-time-four-outline"
+                              readonly
+                              v-bind="attrs"
+                              v-on="on"
+                            ></v-text-field>
+                            
+                          </template>
+                          <v-time-picker
+                            use-seconds
+                            v-if="clockEnd"
+                            v-model="lastTime[1]"
+                            full-width
+                            @click:minute="$refs.menuEndTime.save(lastTime[1])"
+                          ></v-time-picker>
+                          <v-spacer></v-spacer>
+                          <v-btn text color="primary" @click="modal3 = false">
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.dialog.save(lastTime[1])"
+                          >
+                            OK
+                          </v-btn>
+                      </v-menu>
+                  </div>
+                  <span >
+                    <v-btn
+                    @click="editWorkingtimes"
+                    class="btnEdit"
+                      elevation="6"
+                      outlined
+                    >Confirm</v-btn>
+                  </span>
+                </div>
+
+              </div>
+            </modal>
           </v-card>
         </v-menu>
-        
       </div>
     </v-list>
   </div>
@@ -124,6 +253,8 @@ export default {
   name: "WorkingTimes",
   data() {
     return {
+      absolute: true,
+      showModal: false,
       data_workingtimes: {},
       test: [],
       ttest: [],
@@ -169,7 +300,7 @@ export default {
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-      dataWorks:[],
+      dataWorks: [],
       events: [],
       colors: [
         "blue",
@@ -180,14 +311,38 @@ export default {
         "orange",
         "grey darken-1",
       ],
+      newStartdate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
+       newEnddate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
+        lastDate:['',''],
+        lastTime:['',''],
+      lastStart: "",
+      lastEnd: "",
+      timeStart:null,
+      timeEnd: null,
+      clockStart: false,
+      clockEnd:false,
+      modal2:false,
+      modal3:false,
+      newStartDate:'',
+      newEndDate:'',
+      newWorking:{start:'',end:''},
+      WorkingId:''
     };
   },
- 
+  watch: {
+    overlay(val) {
+      val &&
+        setTimeout(() => {
+          this.overlay = false;
+        }, 2000);
+    },
+  },
   created() {
-
-  this.dataWorks.forEach((i)=>{
-    console.log('I',i)
-  })
+   
 
     this.GetWorkingTImes();
     this.getYears();
@@ -222,12 +377,18 @@ export default {
             let getdaystart = elmt.start.split("T");
             let getdayEnd = elmt.end.split("T");
             let date_Formated = moment(getdaystart[0]).format("YYYY-MM-DD");
-            let date_FormatedEnd = moment(getdayEnd[0]).format( "YYYY-MM-DD");
-            
-            let strStart=date_Formated+' '+getdaystart[1]
-            let strEnd=date_FormatedEnd+' '+getdayEnd[1]
+            let date_FormatedEnd = moment(getdayEnd[0]).format("YYYY-MM-DD");
+
+            let strStart = date_Formated + " " + getdaystart[1];
+            let strEnd = date_FormatedEnd + " " + getdayEnd[1];
             const allDay = this.rnd(0, 3) === 0;
-            this.dataWorks.push({start:strStart,end:strEnd,color:this.colors[this.rnd(0, this.colors.length - 1)],timed:!allDay,id:elmt.id})
+            this.dataWorks.push({
+              start: strStart,
+              end: strEnd,
+              color: this.colors[this.rnd(0, this.colors.length - 1)],
+              timed: !allDay,
+              id: elmt.id,
+            });
 
             let month_date = date_Formated.split(" ");
             let month_date_end = date_FormatedEnd.split(" ");
@@ -251,10 +412,9 @@ export default {
             this.nbWorks++;
             this.pushWorks(month_date[1], this.worksdays, currentday);
             this.worksdays = [];
-
           });
 
-            let test = this.data_workingtimes.map((data) => {
+          let test = this.data_workingtimes.map((data) => {
             let str_date = data.start.split("T");
 
             let dateFormated = moment(str_date[0]).format("dddd MMMM YY");
@@ -306,10 +466,14 @@ export default {
       this.$refs.calendar.next();
     },
     showEvent({ nativeEvent, event }) {
-      
       const open = () => {
         this.selectedEvent = event;
         this.selectedElement = nativeEvent.target;
+              this.lastDate[0]=event.start.split(" ")[0]
+              this.lastDate[1]=event.end.split(" ")[0]
+              this.lastTime[0]=event.start.split(" ")[1]
+              this.lastTime[1]=event.end.split(" ")[1]
+              this.WorkingId=event.id
         requestAnimationFrame(() =>
           requestAnimationFrame(() => (this.selectedOpen = true))
         );
@@ -327,38 +491,67 @@ export default {
     updateRange() {
       const events = [];
 
-     
-      this.dataWorks.forEach( (el) => {
-      const allDay = this.rnd(0, 3) === 0
-      let startTime=el.start
-      let endTime = el.end
-      events.push({
-        start: startTime,
-        end: endTime,
-        color:this.colors[this.rnd(0, this.colors.length - 1)],
-        timed: !allDay,
-        id:el.id
-      })
-      })
-
+      this.dataWorks.forEach((el) => {
+        const allDay = this.rnd(0, 3) === 0;
+        let startTime = el.start;
+        let endTime = el.end;
+        events.push({
+          start: startTime,
+          end: endTime,
+          color: this.colors[this.rnd(0, this.colors.length - 1)],
+          timed: !allDay,
+          id: el.id,
+        });
+      });
 
       this.events = events;
     },
     rnd(a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a;
     },
-     
+    editWorkingtimes() {
+
+            let strt = this.lastDate[0]+" "+this.lastTime[0]
+            let end = this.lastDate[1]+" "+this.lastTime[1]
+            this.newStartDate=this.lastDate[0]
+             this.newStartDate=this.newStartDate+' '
+              this.newStartDate=this.newStartDate+this.lastTime[0]
+           this.newEndDate=this.lastDate[1]
+          this.newEndDate=this.newEndDate+' '
+           this.newEndDate=this.newEndDate+this.lastTime[1]
+  
+             if(confirm("Do you really want to edit this workingtime?")){
+                this.newWorking.start=strt
+                this.newWorking.end=end
+                let workingtime= this.newWorking
+              
+              axios.put('http://localhost:4000/api/workingtimes/'+this.WorkingId,
+                {workingtime},
+                )
+                .then(resp => {
+                    console.log(resp)
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+   }
+
+    }
   },
   computed: {
-    eventsMap () {
-        const map = {}
-        this.dataWorks.forEach(e => (map[e['worksdate']] = map[e['worksdate']] || []).push(e))
+    dateRangeText () {
+        return this.lastDate.join(' ~ ')
+      },
+    eventsMap() {
+      const map = {};
+      this.dataWorks.forEach((e) =>
+        (map[e["worksdate"]] = map[e["worksdate"]] || []).push(e)
+      );
 
-        return map
-      }
+      return map;
+    },
   },
   mounted() {
-  
     this.$refs.calendar.checkChange();
   },
 };
@@ -373,7 +566,6 @@ export default {
 }
 .listCard {
   height: 35vh;
- 
 }
 .itemCard {
   background-color: cornflowerblue;
@@ -381,12 +573,19 @@ export default {
   width: 85%;
   border: 3;
   margin: 5%;
- 
 
   border-radius: 20;
 }
 .btnYear {
   margin: 2%;
+}
+.boxEdit {
+  width: 100%;
+
+}
+.btnEdit {
+  margin-left: 45%;
+
 }
 .cardWorks {
   width: 90%;
@@ -403,15 +602,24 @@ export default {
   height: 100%;
   width: 100%;
 }
+.inputEdit {
+  width: 70%;
+}
+.inputEditBox {
+  padding:2%;
+align-self: center;
+  width: 100%;
+}
 .datebox {
-  background-color: crimson;
-  height: 10vh;
-  
+  width:100%;
+  text-align: center;
+  align-content: center;
+  /* background-color: crimson; */
+  height: 100%;
 }
 .startdate {
   font-size: 20;
   background-color: yellow;
- 
 }
 .enddate {
   font-size: 20;
@@ -439,4 +647,5 @@ export default {
   width: 10%;
   margin-right: 1%;
 }
+
 </style>
