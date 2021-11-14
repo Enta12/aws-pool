@@ -16,7 +16,8 @@ const store = new Vuex.Store({
             id : -1,
             PointingDate : {},
             TimeElapsed : "",
-            role : 0
+            role : 0,
+            pointer : "",
         }
     },
     mutations: {

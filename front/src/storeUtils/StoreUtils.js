@@ -1,10 +1,22 @@
 import store from "../store/Store";
 
 function getDateTime() {
+    let i = 0
+    let save = 0
+    let date = [" janvier", "fevrier", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "decembre"]
+    let today = new Date()
+
+    for (let tmp of date) {
+        ++i;
+        if (tmp === today.toLocaleString('it-IT', { month: 'long' }))
+        {
+            save = i
+        }
+    }
     let daytime = new Date()
     let daytime_tmp = new Date()
-    let month = addZero(daytime.getMonth().toString())
-    let day = addZero(daytime.getDay().toString())
+    let month = addZero(save.toString())
+    let day = addZero(today.toString().split(" ")[2])
     let hour = addZero(daytime.getHours().toString())
     let minute = addZero(daytime.getMinutes().toString())
     let second = addZero(daytime.getSeconds().toString())
