@@ -55,7 +55,7 @@
           </v-card>
       </v-row>
       <v-row>
-        <v-btn class="button" color="info" v-on:click="addWorkingTime()" flat>
+        <v-btn class="button" color="info" v-on:click="addWorkingTime()">
           ADD
         </v-btn>
         <v-spacer></v-spacer>

@@ -13,7 +13,7 @@
             <v-card elevation="6" style="margin: auto">
               <v-card-title class="justify-center">CHART PANNEL</v-card-title>
               <v-card-actions>
-                <v-btn v-on:click="ChangeForDay">Voir pour la journée</v-btn>
+                <v-btn v-on:click="ChangeForDay('2021-10-05')">Voir pour la journée</v-btn>
                 <v-btn>Voir pour la semaine</v-btn>
               </v-card-actions>
             </v-card>
@@ -25,6 +25,7 @@
 <script>
 import {Chart, registerables} from 'chart.js'
 import {BarChart, LineChart, PieChart} from "../ChartsType";
+import {getAllWorkingTimeForTheDay} from "../storeUtils/StoreUtils";
 //import {GetAllWorkingTimes, getDateTime} from "../storeUtils/StoreUtils";
 
 Chart.register(...registerables)
@@ -39,15 +40,21 @@ export default {
     }
   },
   methods : {
-    async ChangeForDay() {
-      let response;
+    async ChangeForDay(date) {
+      let response
+      response = await fetch("http://ligne7.pepintrie.fr:4000/api/workingtimes/" + this.$store.state.user.id, {method : "GET"}).then((res) => {
+        return res.json()
+      }).catch((err) => {
+        console.log("ERROR = ", err)
+      })
       if (this.actual_canva === 0) {
         this.DataChart.data.datasets[0].data
-        response = await fetch("http://ligne7.pepintrie.fr:4000/api/workingtimes/" + this.$store.state.user.id, {method : "GET"}).then((res) => {
-          return res.json()
-        }).catch((err) => {
-          console.log("ERROR = ", err)
-        })}
+      } else if (this.actual_canva === 0) {
+        this.DataChart.data.datasets[0].data
+      } else {
+        this.DataChart.data.datasets[0].data
+      }
+      console.log(await getAllWorkingTimeForTheDay(date));
       console.log(response)
     },
     async ChangeForWeek() {

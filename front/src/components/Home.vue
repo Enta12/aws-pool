@@ -53,9 +53,7 @@ export default {
         },
         method: 'POST',
         body: JSON.stringify(test)
-      })
-          .then( () => {
-          }).catch((err) => {
+      }).catch((err) => {
         console.log("MY ERROR = ", err)
       })
     }
